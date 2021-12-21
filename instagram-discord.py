@@ -16,23 +16,21 @@ Code taken largely from fernandod1 on GitHub. I'm altering things slightly to ho
 
 # REQUIREMENTS:
 # - Python v3
-# - Python module re, json, requests
+# - Python module json, requests
 import json
 import requests
 import os
 import time
 
 # USAGE:
-# Set Environment Variables:
-# Set IG_USERNAME to username account you want to monitor. Example - ladygaga
-# Set WEBHOOK_URL to Discord account webhook url. To know how, just Google: "how to create webhook discord".
-# Set TIME_INTERVAL to the time in seconds in between each check for a new post. Example - 1.5, 600 (default=600)
-# Help: https://www.serverlab.ca/tutorials/linux/administration-linux/how-to-set-environment-variables-in-linux/
+# Change elements in INSTAGRAM_ACCOUNTS to the names of the accounts you want to copy. 
+# Because I'm running my webhook directly from this repository, mine are already specified. Please do not judge.
 
 INSTAGRAM_ACCOUNTS = ["pipesbuffet", "kookyfonts", "boomer.jim", "imshively", "worst.buy", "chrissimpsonsartist"]
 WEBHOOK_URL = "https://discord.com/api/webhooks/922646420270510130/u2yGGmeqnWnegaOuaSR6SH1sSJaaklv6SX1vv-U2Lzhs931P_7rI2btmtOHukay8rJHf"
 
 # ----------------------- Do not modify under this line ----------------------- #
+# Sorry!
 
 
 def get_user_fullname(html):
@@ -80,7 +78,7 @@ def webhook(webhook_url, html, user):
     except requests.exceptions.HTTPError as err:
         print(err)
     else:
-        print("Image successfully posted in Discord, code {}.".format(
+        print("Image successfully posted in Discord, code {}.\n".format(
             result.status_code))
 
 
@@ -99,10 +97,10 @@ def main():
         try:
             html = get_instagram_html(user)
             if(os.environ.get("LAST_IMAGE_ID") == get_last_publication_url(html)):
-                print("Not new image to post in discord.")
+                print("No new image from {0}.".format(user))
             else:
                 os.environ["LAST_IMAGE_ID"] = get_last_publication_url(html)
-                print("New image to post in discord.")
+                print("New image from {0} to post in discord.".format(user))
                 webhook(WEBHOOK_URL,
                         get_instagram_html(user), user)
         except Exception as e:
@@ -113,6 +111,6 @@ if __name__ == "__main__":
     if WEBHOOK_URL != None:
         while True:
             main()
-            time.sleep(float(os.environ.get('TIME_INTERVAL') or 600)) # 600 = 10 minutes
+            time.sleep(600) # 600 = 10 minutes
     else:
         print('Please configure environment variables properly!')
