@@ -1,5 +1,9 @@
 #!/usr/bin/python
 
+'''
+Code taken largely from fernandod1 on GitHub. I'm altering things slightly to hopefully work for multiple accounts.
+'''
+
 # Copyright (c) 2020 Fernando
 # Url: https://github.com/fernandod1/
 # License: MIT
@@ -13,11 +17,8 @@
 # REQUIREMENTS:
 # - Python v3
 # - Python module re, json, requests
-import re
 import json
-import sys
 import requests
-import urllib.request
 import os
 import time
 
@@ -28,7 +29,8 @@ import time
 # Set TIME_INTERVAL to the time in seconds in between each check for a new post. Example - 1.5, 600 (default=600)
 # Help: https://www.serverlab.ca/tutorials/linux/administration-linux/how-to-set-environment-variables-in-linux/
 
-INSTAGRAM_USERNAME = "pipesbuffet"
+INSTAGRAM_ACCOUNTS = ["pipesbuffet", "kookyfonts", "boomer.jim", "imshively", "worst.buy", "chrissimpsonsartist"]
+WEBHOOK_URL = "https://discord.com/api/webhooks/922646420270510130/u2yGGmeqnWnegaOuaSR6SH1sSJaaklv6SX1vv-U2Lzhs931P_7rI2btmtOHukay8rJHf"
 
 # ----------------------- Do not modify under this line ----------------------- #
 
@@ -57,14 +59,14 @@ def get_description_photo(html):
     return html.json()["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["edge_media_to_caption"]["edges"][0]["node"]["text"]
 
 
-def webhook(webhook_url, html):
+def webhook(webhook_url, html, user):
     # for all params, see https://discordapp.com/developers/docs/resources/webhook#execute-webhook
     # for all params, see https://discordapp.com/developers/docs/resources/channel#embed-object
     data = {}
     data["embeds"] = []
     embed = {}
     embed["color"] = 15467852
-    embed["title"] = "New pic of @"+INSTAGRAM_USERNAME+""
+    embed["title"] = "New post from @{0}".format(user)
     embed["url"] = "https://www.instagram.com/p/" + \
         get_last_publication_url(html)+"/"
     embed["description"] = get_description_photo(html)
@@ -82,32 +84,33 @@ def webhook(webhook_url, html):
             result.status_code))
 
 
-def get_instagram_html(INSTAGRAM_USERNAME):
+def get_instagram_html(user):
     headers = {
         "Host": "www.instagram.com",
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11"
     }
     html = requests.get("https://www.instagram.com/" +
-                        INSTAGRAM_USERNAME + "/feed/?__a=1", headers=headers)
+                        user + "/feed/?__a=1", headers=headers)
     return html
 
 
 def main():
-    try:
-        html = get_instagram_html(INSTAGRAM_USERNAME)
-        if(os.environ.get("LAST_IMAGE_ID") == get_last_publication_url(html)):
-            print("Not new image to post in discord.")
-        else:
-            os.environ["LAST_IMAGE_ID"] = get_last_publication_url(html)
-            print("New image to post in discord.")
-            webhook(os.environ.get("WEBHOOK_URL"),
-                    get_instagram_html(INSTAGRAM_USERNAME))
-    except Exception as e:
-        print(e)
+    for user in INSTAGRAM_ACCOUNTS:
+        try:
+            html = get_instagram_html(user)
+            if(os.environ.get("LAST_IMAGE_ID") == get_last_publication_url(html)):
+                print("Not new image to post in discord.")
+            else:
+                os.environ["LAST_IMAGE_ID"] = get_last_publication_url(html)
+                print("New image to post in discord.")
+                webhook(WEBHOOK_URL,
+                        get_instagram_html(user), user)
+        except Exception as e:
+            print(e)
 
 
 if __name__ == "__main__":
-    if os.environ.get('IG_USERNAME') != None and os.environ.get('WEBHOOK_URL') != None:
+    if WEBHOOK_URL != None:
         while True:
             main()
             time.sleep(float(os.environ.get('TIME_INTERVAL') or 600)) # 600 = 10 minutes
