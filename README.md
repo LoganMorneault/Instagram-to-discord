@@ -13,15 +13,9 @@ This script executes 2 actions:
 
 ## Usage:
 
-Set environment variables:
+Change strings in INSTAGRAM_ACCOUNTS to the names of the accounts you want to pull posts from.
+I'm running my bot directly from this repository, so my accounts are already specified.
 
-- Set IG_USERNAME to username account you want to monitor. Example: ladygaga
-- Set WEBHOOK_URL to Discord account webhook url. To know how, just Google: "how to create webhook discord".
-- Set TIME_INTERVAL to the time in seconds in between each check for a new post. Example: 1.5, 600 (default=600 = 10 minutes)
+## Credit
 
-How to setup enviroment variables: 
-https://www.serverlab.ca/tutorials/linux/administration-linux/how-to-set-environment-variables-in-linux/
-
-## Collaborations:
-
-Collaborations to improve script are always welcome.
+Code taken from fernandod1 on GitHub and refactored slightly. All credit goes to him.
