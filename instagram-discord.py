@@ -28,7 +28,7 @@ import time
 # Set TIME_INTERVAL to the time in seconds in between each check for a new post. Example - 1.5, 600 (default=600)
 # Help: https://www.serverlab.ca/tutorials/linux/administration-linux/how-to-set-environment-variables-in-linux/
 
-INSTAGRAM_USERNAME = os.environ.get('IG_USERNAME')
+INSTAGRAM_USERNAME = "pipesbuffet"
 
 # ----------------------- Do not modify under this line ----------------------- #
 
