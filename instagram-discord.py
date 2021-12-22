@@ -27,7 +27,8 @@ import time
 # Because I'm running my webhook directly from this repository, mine are already specified. Please do not judge.
 
 INSTAGRAM_ACCOUNTS = ["pipesbuffet"]
-WEBHOOK_URL = "https://discord.com/api/webhooks/922646420270510130/u2yGGmeqnWnegaOuaSR6SH1sSJaaklv6SX1vv-U2Lzhs931P_7rI2btmtOHukay8rJHf"
+WEBHOOK_URL = os.environ["WEBHOOK"]
+
 
 # ----------------------- Do not modify under this line ----------------------- #
 # Sorry!
@@ -111,6 +112,6 @@ if __name__ == "__main__":
     if WEBHOOK_URL != None:
         while True:
             main()
-            time.sleep(600) # 600 = 10 minutes
+            time.sleep(30) # 600 = 10 minutes
     else:
         print('Please configure environment variables properly!')
