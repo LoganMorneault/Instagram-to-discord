@@ -31,7 +31,9 @@ jobs:
         # But first we read the WEBHOOK secret and create an
         # environment variable with the same name.
         env:
-          WEBHOOK: ${{ secrets.WEBHOOK }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          IG_USERNAME: ${{ secrets.IG_USERNAME }}
+          TIME_INTERVAL: ${{ secrets.TIME_INTERVAL }}
         run: |
           pip install -r requirements.txt
           python instagram-discord.py
