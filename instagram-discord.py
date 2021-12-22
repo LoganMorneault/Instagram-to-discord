@@ -26,7 +26,7 @@ import time
 # Change elements in INSTAGRAM_ACCOUNTS to the names of the accounts you want to copy. 
 # Because I'm running my webhook directly from this repository, mine are already specified. Please do not judge.
 
-INSTAGRAM_ACCOUNTS = ["pipesbuffet", "kookyfonts", "boomer.jim", "imshively", "worst.buy", "chrissimpsonsartist", "war_history"]
+INSTAGRAM_ACCOUNTS = ["pipesbuffet", "kookyfonts", "boomer.jim", "imshively", "worst.buy", "chrissimpsonsartist", "war_history", "trashcanpaul"]
 WEBHOOK_URL = "https://discord.com/api/webhooks/922646420270510130/u2yGGmeqnWnegaOuaSR6SH1sSJaaklv6SX1vv-U2Lzhs931P_7rI2btmtOHukay8rJHf"
 
 # ----------------------- Do not modify under this line ----------------------- #
