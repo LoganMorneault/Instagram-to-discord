@@ -112,6 +112,6 @@ if __name__ == "__main__":
     if WEBHOOK_URL != None:
         while True:
             main()
-            time.sleep(30) # 600 = 10 minutes
+            time.sleep(600) # 600 = 10 minutes
     else:
         print('Please configure environment variables properly!')
